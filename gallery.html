@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery - Krish</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background: linear-gradient(to right, #141e30, #243b55);
+    }
+    .gallery-tab {
+      transition: 0.3s;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid transparent;
+    }
+    .gallery-tab:hover, .active-tab {
+      background: rgba(0, 255, 255, 0.1);
+      border-color: #0ff;
+      color: #0ff;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+  </style>
+</head>
+<body class="text-white font-poppins overflow-x-hidden">
+  <header class="p-6 flex justify-between items-center border-b border-cyan-500 bg-black/40 shadow-xl">
+    <h1 class="text-3xl font-extrabold text-cyan-300 tracking-wider">🖼️ Krish Gallery</h1>
+    <a href="index.html" class="text-cyan-400 hover:underline hover:text-cyan-200 transition">⬅ Back to Home</a>
+  </header>
+
+  <main class="p-6">
+    <div class="text-center mb-10">
+      <h2 class="text-4xl font-extrabold text-pink-400 mb-2 animate-pulse">✨ Explore Your World</h2>
+      <p class="text-gray-300 text-lg max-w-xl mx-auto">Tap on a section to view your stored content – organized, beautiful, and blazing fast.</p>
+    </div>
+
+    <div class="flex justify-center gap-4 mb-10 flex-wrap">
+      <button class="gallery-tab px-6 py-3 rounded-lg text-lg" onclick="showTab('image', this)">🖼️ Images</button>
+      <button class="gallery-tab px-6 py-3 rounded-lg text-lg" onclick="showTab('video', this)">🎬 Videos</button>
+      <button class="gallery-tab px-6 py-3 rounded-lg text-lg" onclick="showTab('audio', this)">🎵 Audio</button>
+      <button class="gallery-tab px-6 py-3 rounded-lg text-lg" onclick="showTab('others', this)">📄 Documents</button>
+    </div>
+
+    <div id="gallery-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8"></div>
+  </main>
+
+  <footer class="text-center p-4 text-sm text-gray-400 border-t border-cyan-900 bg-black/30">© 2025 Krish Gallery</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script>
+    const SUPABASE_URL = 'https://arfhsdagmupeghedyvdz.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFyZmhzZGFnbXVwZWdoZWR5dmR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA3NzIyOTQsImV4cCI6MjA2NjM0ODI5NH0.2JIbAXRCCHUQ3x_nQq3VYPJXAerG-bXUG2TTPm-9arI';
+    const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function showTab(type, el) {
+      document.querySelectorAll('.gallery-tab').forEach(btn => btn.classList.remove('active-tab'));
+      el.classList.add('active-tab');
+
+      const path = `public/${type}`;
+      const { data, error } = await client.storage.from('krish').list(path);
+      const container = document.getElementById('gallery-container');
+      container.innerHTML = '';
+      if (error || !data || data.length === 0) {
+        container.innerHTML = `<p class="text-center text-gray-400">No ${type} files found.</p>`;
+        return;
+      }
+
+      data.forEach(file => {
+        const url = `${SUPABASE_URL}/storage/v1/object/public/krish/${path}/${file.name}`;
+        let element = '';
+        if (type === 'image') {
+          element = `<img src="${url}" class="w-full h-60 object-cover rounded-lg shadow-lg hover:scale-105 transform transition" alt="${file.name}">`;
+        } else if (type === 'video') {
+          element = `<video src="${url}" controls class="w-full rounded-lg shadow-lg"></video>`;
+        } else if (type === 'audio') {
+          element = `<audio src="${url}" controls class="w-full rounded-lg"></audio>`;
+        } else {
+          element = `<a href="${url}" target="_blank" class="block text-blue-400 hover:text-blue-200 font-semibold">📄 ${file.name}</a>`;
+        }
+        container.innerHTML += `<div class="glass p-4 rounded-xl">${element}</div>`;
+      });
+    }
+
+    // Trigger first tab by simulating a click
+    window.onload = () => {
+      document.querySelectorAll('.gallery-tab')[0].click();
+    }
+  </script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>AOS.init();</script>
+</body>
+</html>
+
+

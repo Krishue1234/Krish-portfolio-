@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upload - Krish</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to right, #1f2937, #111827);
+      font-family: 'Poppins', sans-serif;
+    }
+    .glass-box {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body class="text-white">
+  <header class="p-6 flex justify-between items-center border-b border-cyan-500 bg-black/40 shadow-xl">
+    <h1 class="text-3xl font-extrabold text-cyan-300 tracking-wider">⬆️ Upload Files</h1>
+    <a href="index.html" class="text-cyan-400 hover:underline hover:text-cyan-200 transition">⬅ Back to Home</a>
+  </header>
+
+  <main class="p-8 max-w-2xl mx-auto">
+    <div class="glass-box p-8 rounded-xl" data-aos="fade-up">
+      <h2 class="text-3xl font-bold text-center text-pink-400 mb-6">Upload Your Files</h2>
+      <input type="file" id="fileInput" class="w-full mb-4 text-black rounded p-2" />
+      <button onclick="uploadFile()" class="w-full bg-pink-600 hover:bg-pink-700 transition py-2 rounded font-semibold text-lg">Upload 🚀</button>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script>
+    const SUPABASE_URL = 'https://arfhsdagmupeghedyvdz.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFyZmhzZGFnbXVwZWdoZWR5dmR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA3NzIyOTQsImV4cCI6MjA2NjM0ODI5NH0.2JIbAXRCCHUQ3x_nQq3VYPJXAerG-bXUG2TTPm-9arI';
+    const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function uploadFile() {
+      const file = document.getElementById('fileInput').files[0];
+      if (!file) return alert("Please select a file first!");
+
+      const ext = file.name.split('.').pop().toLowerCase();
+      let folder = 'others';
+      if (["jpg", "jpeg", "png", "gif", "webp"].includes(ext)) folder = 'image';
+      else if (["mp4", "webm"].includes(ext)) folder = 'video';
+      else if (["mp3", "wav", "ogg"].includes(ext)) folder = 'audio';
+
+      const path = `public/${folder}/${file.name}`;
+      const { data, error } = await client.storage.from('krish').upload(path, file, { upsert: true });
+
+      if (error) {
+        alert("Upload failed: " + error.message);
+        return;
+      }
+      alert("✅ File uploaded successfully to " + folder);
+    }
+  </script>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>AOS.init();</script>
+</body>
+</html>
+
+

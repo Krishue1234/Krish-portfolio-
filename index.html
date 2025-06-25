@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Krish Portfolio</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Poppins:wght@300;600;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+    }
+    .glow {
+      text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff;
+    }
+    .floating {
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+  </style>
+</head>
+<body class="text-white font-poppins overflow-x-hidden">
+  <header class="p-6 flex justify-between items-center border-b border-cyan-800 shadow-xl">
+    <h1 class="text-4xl font-extrabold text-cyan-300 glow animate-pulse">🚀 Krish</h1>
+    <nav class="space-x-6 text-lg">
+      <a href="index.html" class="hover:text-cyan-400 transition">Home</a>
+      <a href="about.html" class="hover:text-cyan-400 transition">About</a>
+      <a href="gallery.html" class="hover:text-cyan-400 transition">Gallery</a>
+      <a href="files.html" class="hover:text-cyan-400 transition">Files</a>
+      <a href="upload.html" class="hover:text-cyan-400 transition">Upload</a>
+      <a href="login.html" class="hover:text-cyan-400 transition">Login</a>
+      <a href="profile.html" class="hover:text-cyan-400 transition">Profile</a> <!-- ✅ Added line -->
+    </nav>
+  </header>
+
+  <main class="text-center p-6 min-h-screen flex flex-col justify-center items-center relative">
+    <div class="absolute w-72 h-72 bg-cyan-400 opacity-20 blur-3xl rounded-full top-10 left-1/2 transform -translate-x-1/2"></div>
+    <img src="krish.jpg" alt="Krish Image" class="w-40 h-40 rounded-full border-4 border-cyan-300 shadow-lg floating z-10">
+    <h2 class="text-5xl font-extrabold text-pink-400 mt-8 glow z-10">Welcome to My Universe</h2>
+    <p class="text-lg mt-4 max-w-2xl mx-auto z-10 text-white/80">I'm <span class="text-cyan-300 font-bold">Krish</span>, a futuristic dreamer. Here you can explore my digital files, watch creative visuals, and upload your own work — all inside one ultra-modern portfolio.</p>
+    <div class="mt-10 space-x-4 z-10">
+      <a href="gallery.html" class="bg-pink-500 px-6 py-2 rounded-lg text-white hover:bg-pink-600 transition">🌠 Explore Gallery</a>
+      <a href="upload.html" class="bg-cyan-500 px-6 py-2 rounded-lg text-white hover:bg-cyan-600 transition">⬆️ Upload Now</a>
+    </div>
+  </main>
+
+  <footer class="text-center p-6 text-sm text-gray-400">
+    © 2025 Krish. All rights reserved.
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="main.js"></script>
+  <script>AOS.init();</script>
+</body>
+</html>
